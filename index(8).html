@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#102a43">
+<title>MNP予約番号 発行方法一覧</title>
+
+<style>
+:root{
+  --navy:#0e2238;
+  --navy2:#173c5f;
+  --blue:#2f78a8;
+  --sky:#eaf4fb;
+  --bg:#f3f6f9;
+  --card:rgba(255,255,255,.94);
+  --text:#172033;
+  --muted:#6b7b8d;
+  --line:#dfe8ef;
+  --green:#158466;
+  --warn-bg:#fff8e7;
+  --warn:#7a5800;
+  --imp-bg:#fff0f3;
+  --imp:#9b2839;
+  --shadow:0 18px 48px rgba(14,34,56,.10);
+  --shadow-soft:0 8px 24px rgba(14,34,56,.07);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(47,120,168,.10),transparent 34%),
+    radial-gradient(circle at 100% 18%,rgba(84,180,190,.08),transparent 28%),
+    var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif;
+  line-height:1.65;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.hero{
+  position:relative;
+  overflow:hidden;
+  color:#fff;
+  padding:46px 18px 40px;
+  background:
+    linear-gradient(135deg,rgba(11,31,50,.98),rgba(34,91,132,.94)),
+    #102a43;
+}
+.hero::before,
+.hero::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+}
+.hero::before{
+  width:360px;height:360px;
+  right:-120px;top:-160px;
+  background:radial-gradient(circle,rgba(255,255,255,.16),rgba(255,255,255,0) 67%);
+}
+.hero::after{
+  width:280px;height:280px;
+  left:-130px;bottom:-190px;
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 0 0 34px rgba(255,255,255,.03),0 0 0 68px rgba(255,255,255,.02);
+}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:auto}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.16em;
+  opacity:.82;
+}
+.eyebrow::before{
+  content:"";
+  width:8px;height:8px;border-radius:50%;
+  background:#7bd5ca;
+  box-shadow:0 0 0 6px rgba(123,213,202,.12);
+}
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 11px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(10px);
+  font-size:11px;
+  font-weight:700;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:end;
+  gap:30px;
+}
+h1{
+  font-size:clamp(31px,7vw,52px);
+  line-height:1.12;
+  letter-spacing:-.04em;
+  margin:0 0 13px;
+  max-width:760px;
+}
+.lead{
+  margin:0;
+  max-width:760px;
+  font-size:16px;
+  color:rgba(255,255,255,.82);
+}
+.hero-stat{
+  min-width:180px;
+  padding:18px 20px;
+  border-radius:20px;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(14px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+.hero-stat strong{
+  display:block;
+  font-size:28px;
+  line-height:1;
+  margin-bottom:6px;
+}
+.hero-stat span{font-size:11px;color:rgba(255,255,255,.72)}
+.search-area{
+  position:sticky;
+  top:0;
+  z-index:30;
+  padding:12px;
+  background:rgba(243,246,249,.88);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(214,224,233,.88);
+}
+.search-row{
+  max-width:1120px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:12px;
+  align-items:center;
+}
+.search{position:relative}
+.search input{
+  width:100%;
+  height:56px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.96);
+  border-radius:17px;
+  padding:0 48px 0 48px;
+  font-size:16px;
+  outline:none;
+  box-shadow:0 7px 22px rgba(14,34,56,.06);
+  transition:.2s ease;
+}
+.search input:focus{
+  border-color:#70a8cc;
+  box-shadow:0 0 0 5px rgba(47,120,168,.12),0 12px 28px rgba(14,34,56,.08);
+  transform:translateY(-1px);
+}
+.search svg{
+  position:absolute;
+  left:16px;
+  top:50%;
+  transform:translateY(-50%);
+  width:21px;
+  color:#6f8193;
+}
+.clear{
+  display:none;
+  position:absolute;
+  right:8px;
+  top:50%;
+  transform:translateY(-50%);
+  border:0;
+  background:none;
+  font-size:24px;
+  color:#7a8795;
+  padding:8px 10px;
+}
+.count{
+  font-size:12px;
+  color:var(--muted);
+  white-space:nowrap;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:8px 12px;
+}
+main{max-width:1120px;margin:auto;padding:22px 14px 68px}
+.toolbar{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  align-items:flex-start;
+  margin-bottom:15px;
+}
+.filters{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  padding-bottom:4px;
+  scrollbar-width:none;
+}
+.filters::-webkit-scrollbar{display:none}
+.chip{
+  flex:0 0 auto;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.92);
+  border-radius:999px;
+  padding:9px 14px;
+  color:#526275;
+  font-size:13px;
+  box-shadow:0 4px 14px rgba(14,34,56,.04);
+  transition:.2s ease;
+}
+.chip:hover{transform:translateY(-1px);border-color:#abc8dc}
+.chip.active{
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:#fff;
+  border-color:transparent;
+  box-shadow:0 8px 18px rgba(23,60,95,.20);
+}
+.sync{
+  flex:0 0 auto;
+  font-size:11px;
+  color:var(--muted);
+  margin:9px 0 0;
+  white-space:nowrap;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+.card{
+  position:relative;
+  background:var(--card);
+  border:1px solid rgba(218,228,236,.92);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-soft);
+  overflow:hidden;
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
+}
+.card::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:4px;
+  background:linear-gradient(180deg,#2f78a8,#65b6bb);
+  opacity:.9;
+}
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow);
+  border-color:#c8d9e5;
+}
+.card-head{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:18px 19px 16px 21px;
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(248,251,253,.95),rgba(255,255,255,.82));
+}
+.logo-wrap{
+  width:56px;height:56px;flex:0 0 56px;
+  border-radius:17px;
+  background:#fff;
+  border:1px solid var(--line);
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  box-shadow:0 6px 18px rgba(14,34,56,.07);
+}
+.logo{max-width:43px;max-height:43px;object-fit:contain}
+.logo-fallback{
+  font-weight:900;
+  color:var(--blue);
+  font-size:18px;
+  letter-spacing:-.05em;
+}
+.title-area{min-width:0;flex:1}
+.carrier{
+  font-size:21px;
+  line-height:1.22;
+  margin:0;
+  font-weight:850;
+  letter-spacing:-.025em;
+  overflow-wrap:anywhere;
+}
+.category{
+  display:inline-flex;
+  align-items:center;
+  margin-top:6px;
+  padding:4px 9px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#edf6fb,#e5f1f8);
+  color:#245b84;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.02em;
+}
+.card-actions{display:flex;gap:7px}
+.expand{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:11px;
+  padding:8px 11px;
+  color:#40566b;
+  font-size:12px;
+  font-weight:800;
+  box-shadow:0 4px 12px rgba(14,34,56,.05);
+  transition:.2s ease;
+}
+.expand:hover{border-color:#9fc0d5;color:#1f5f91}
+.card.open .expand{background:var(--navy);color:#fff;border-color:var(--navy)}
+.card-body{padding:17px 19px 20px 21px}
+.summary-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:11px;
+}
+.summary-box{
+  position:relative;
+  background:linear-gradient(180deg,#f9fbfc,#f5f8fa);
+  border:1px solid #e6edf3;
+  border-radius:15px;
+  padding:13px 13px 12px;
+  min-height:94px;
+}
+.summary-box::after{
+  content:"";
+  position:absolute;
+  inset:auto 12px 0 12px;
+  height:2px;
+  background:linear-gradient(90deg,rgba(47,120,168,.2),transparent);
+}
+.summary-label{
+  font-size:10px;
+  font-weight:900;
+  color:#587087;
+  margin-bottom:5px;
+  letter-spacing:.04em;
+}
+.summary-text{font-size:14px;line-height:1.6}
+.summary-box.is-primary{
+  background:linear-gradient(145deg,#eef7fc,#ffffff);
+  border-color:#bfd8e8;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 7px 18px rgba(32,91,132,.08);
+}
+.summary-box.is-primary .summary-label{
+  color:#153f61;
+  font-size:12px;
+  letter-spacing:.06em;
+}
+.summary-box.is-primary .summary-text{
+  color:#102a43;
+  font-size:16px;
+  line-height:1.5;
+  font-weight:800;
+}
+.summary-box.is-method::before,
+.summary-box.is-contact::before{
+  position:absolute;
+  top:11px;
+  right:12px;
+  width:27px;
+  height:27px;
+  display:grid;
+  place-items:center;
+  border-radius:9px;
+  background:#dceefa;
+  color:#1f638f;
+  font-size:14px;
+  font-weight:900;
+}
+.summary-box.is-method::before{content:"→";}
+.summary-box.is-contact::before{content:"☎";}
+.detail{
+  display:none;
+  margin-top:18px;
+  border-top:1px dashed var(--line);
+  padding-top:17px;
+}
+.card.open .detail{display:block;animation:fadeIn .22s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+.section{margin:0 0 18px}
+.section:last-child{margin-bottom:0}
+.section-title{
+  font-size:14px;
+  margin:0 0 9px;
+  color:#244d6d;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-weight:900;
+}
+.section-title::before{
+  content:"";
+  width:7px;height:7px;border-radius:50%;
+  background:#4f9abb;
+  box-shadow:0 0 0 5px rgba(79,154,187,.11);
+}
+.rich{font-size:14px}
+.rich h4{
+  font-size:12px;
+  margin:13px 0 8px;
+  color:#274e6b;
+  text-transform:none;
+  letter-spacing:.02em;
+}
+.rich ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.rich li{position:relative;padding-left:25px}
+.rich li::before{
+  content:"✓";
+  position:absolute;
+  left:0;
+  top:0;
+  color:var(--green);
+  font-weight:900;
+  width:18px;height:18px;
+  border-radius:50%;
+  background:rgba(21,132,102,.09);
+  display:grid;
+  place-items:center;
+  font-size:11px;
+}
+.rich p{margin:7px 0}
+.notice,.important{
+  position:relative;
+  border-radius:14px;
+  padding:13px 14px 13px 16px;
+  margin-top:12px;
+  font-size:13px;
+}
+.notice::before,.important::before{
+  content:"";
+  position:absolute;
+  left:0;top:10px;bottom:10px;
+  width:4px;border-radius:4px;
+}
+.notice{
+  background:var(--warn-bg);
+  border:1px solid #f0dda0;
+  color:#654800;
+}
+.notice::before{background:#e4b64a}
+.important{
+  background:var(--imp-bg);
+  border:1px solid #efc2c8;
+  color:#79202b;
+}
+.important::before{background:#d96578}
+.notice b,.important b{
+  display:block;
+  font-size:10px;
+  margin-bottom:4px;
+  letter-spacing:.08em;
+}
+.meta{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:9px;
+  margin-top:17px;
+  padding-top:14px;
+  border-top:1px dashed var(--line);
+  font-size:11px;
+  color:var(--muted);
+}
+.official{
+  margin-left:auto;
+  color:#fff;
+  text-decoration:none;
+  font-weight:800;
+  background:linear-gradient(135deg,#285f8b,#347fa8);
+  padding:8px 11px;
+  border-radius:10px;
+  box-shadow:0 6px 14px rgba(40,95,139,.16);
+}
+.empty,.error{
+  display:none;
+  background:rgba(255,255,255,.94);
+  border-radius:18px;
+  padding:30px;
+  text-align:center;
+  border:1px dashed #cbd5df;
+  color:#66758a;
+}
+.error{
+  color:#8f2431;
+  background:#fff0f2;
+  border-style:solid;
+  margin-bottom:14px;
+}
+mark{
+  background:#fff0a8;
+  border-radius:4px;
+  padding:0 2px;
+}
+footer{
+  text-align:center;
+  padding:30px 18px;
+  color:#7a8795;
+  font-size:11px;
+}
+@media(max-width:820px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-stat{display:none}
+  .grid{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .hero{padding:30px 16px 26px}
+  .hero-top{margin-bottom:15px}
+  .hero-badge{display:none}
+  .lead{font-size:13px}
+  .search-area{padding:10px}
+  .search-row{grid-template-columns:1fr}
+  .count{display:none}
+  main{padding:15px 10px 50px}
+  .toolbar{display:block}
+  .sync{margin:7px 2px 13px}
+  .card-head{padding:14px 14px 13px 17px;gap:11px}
+  .logo-wrap{width:48px;height:48px;flex-basis:48px;border-radius:14px}
+  .logo{max-width:37px;max-height:37px}
+  .carrier{font-size:18px}
+  .card-body{padding:14px 14px 17px 17px}
+  .summary-grid{grid-template-columns:1fr}
+  .summary-box{min-height:auto;padding:12px 13px}
+  .summary-box.is-primary .summary-label{font-size:11px}
+  .summary-box.is-primary .summary-text{font-size:15px;padding-right:28px}
+  .card-actions{align-self:flex-start}
+  .expand{font-size:11px;padding:7px 9px}
+  .official{width:100%;margin-left:0;text-align:center}
+}
+@media(max-width:390px){
+  h1{font-size:29px}
+  .card-head{align-items:flex-start}
+  .category{font-size:9px}
+}
+</style>
+
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <div class="eyebrow">MNP SUPPORT DATABASE</div>
+      <div class="hero-badge">Spreadsheet Sync Ready</div>
+    </div>
+    <div class="hero-grid">
+      <div>
+        <h1>MNP予約番号<br>発行方法一覧</h1>
+        <p class="lead">キャリア名、電話番号、発行時間、エラー内容、関連サービスから検索できます。データはGoogleスプレッドシートから追加・更新できます。</p>
+      </div>
+      <div class="hero-stat">
+        <strong id="heroCount">—</strong>
+        <span>公開キャリアを掲載中</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="search-area">
+  <div class="search-row">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="search" type="search" placeholder="例：docomo、151、パケットシェア、SMS、3営業日">
+      <button class="clear" id="clear" aria-label="検索をクリア">×</button>
+    </div>
+    <div class="count" id="count">読み込み中…</div>
+  </div>
+</div>
+
+<main>
+  <div class="error" id="error"></div>
+  <div class="toolbar">
+    <div class="filters" id="filters"></div>
+    <p class="sync" id="sync">データを読み込んでいます</p>
+  </div>
+  <section class="grid" id="grid"></section>
+  <div class="empty" id="empty">一致するキャリア・項目が見つかりませんでした。</div>
+</main>
+
+<footer>契約状態や各社の画面変更により手順が異なる場合があります。最終判断は各社公式情報をご確認ください。</footer>
+
+<script>
+const APPS_SCRIPT_URL = "";
+const DEMO_DATA = [{"carrier": "docomo", "category": "大手キャリア", "logoUrl": "images/docomo.svg", "webAvailable": "可能。My docomoから手続き。MNPワンストップ対応先では予約番号不要。", "webSteps": "## Web手順\n・My docomoへログイン\n・お手続き\n・解約・その他\n・MNP予約\n※画面名称は変更される場合があります。", "phoneAvailable": "可能。電話またはドコモショップで対応。", "phone": "ドコモ携帯：151／一般電話：0120-800-000／9:00～20:00", "phoneSteps": "## 電話時の準備\n・契約者本人が連絡\n・ネットワーク暗証番号を準備\n・複数回線の場合は対象番号を明確にする", "timing": "Webは24時間。電話は9:00～20:00。", "precheck": "・一括請求\n・代表回線\n・ファミリー割引グループ\n・ドコモ光ペア回線\n・契約名義", "unavailable": "・home 5Gは通常の携帯MNP対象外\n・データ専用契約は契約内容により対象外", "trouble": "## エラー時\n・表示されたエラー文とコードを控える\n・一度ログアウトして再ログイン\n・解決しない場合は公式窓口へ問い合わせる", "related": "・ドコモ光ペア回線\n・一括請求\n・dポイントグループ\n・代表回線", "fieldNote": "・旧資料にはタブレットを音声化してMNPする運用例がありますが、手数料・可否は契約ごとに公式確認してください。", "important": "一括請求・代表回線・ドコモ光ペア回線などにより、予約番号発行前に別手続きが必要になる場合があります。", "note": "「どんな場合でもWebで発行可能」と断定しません。契約状態により個別対応です。", "url": "https://www.docomo.ne.jp/support/cancel_mnp/", "status": "公開", "checked": "2026-07-11"}, {"carrier": "ahamo", "category": "オンライン専用", "logoUrl": "images/ahamo.svg", "webAvailable": "可能。My docomoから手続き。MNPワンストップ対応先では予約番号不要。", "webSteps": "## Web手順\n・My docomoへログイン\n・MNP予約番号発行を選択\n・画面案内に沿って申請", "phoneAvailable": "原則オンライン。発行できない場合はahamo公式チャットへ相談。", "phone": "公式チャット／必要に応じてahamo公式窓口", "phoneSteps": "## 問い合わせ時\n・エラーコード\n・表示画面\n・代表回線や一括請求の状況を伝える", "timing": "オンラインで手続き。契約状況により事前処理が必要。", "precheck": "・一括請求の代表回線\n・ファミリー割引代表回線\n・ドコモ光ペア回線", "unavailable": "・データ専用契約などは対象外の場合あり", "trouble": "## エラー時\n・エラーコードを控える\n・公式チャットへ相談\n・代表回線変更やグループ変更が必要か確認", "related": "・ドコモ光\n・一括請求\n・ファミリー割引\n・データシェア", "fieldNote": "・旧資料には暗証番号ロック解除窓口や音声プラン変更の運用例がありますが、現在の公式案内を優先してください。", "important": "代表回線や一括請求の状態により、MNP手続き前にグループ側の変更が必要になる場合があります。", "note": "非公式な解除依頼文や『エラーと言い続ける』等の表現は使用しません。", "url": "https://faq.ahamo.com/faq/show/2514", "status": "公開", "checked": "2026-07-11"}, {"carrier": "au", "category": "大手キャリア", "logoUrl": "images/au.svg", "webAvailable": "可能。My auから手続き。MNPワンストップ対応先では予約番号不要。", "webSteps": "## Web手順\n・My auへログイン\n・スマートフォン・携帯電話\n・ご契約内容／手続き\n・MNP関連手続きを選択", "phoneAvailable": "可能。電話またはau Style・auショップ。", "phone": "0077-75470／9:00～20:00", "phoneSteps": "## 電話時の準備\n・契約者本人が連絡\n・4桁の暗証番号を準備\n・SMSを受け取れる端末を準備", "timing": "Webは24時間。電話は9:00～20:00。", "precheck": "・契約名義\n・家族割\n・auスマートバリュー\n・auでんき\n・未払いの有無", "unavailable": "・タブレットやホームルーター等のデータ専用契約はMNP対象外の場合あり", "trouble": "## SMSが届かない場合\n・数分待つ\n・端末のSMS受信設定を確認\n・公式窓口へ再確認", "related": "・家族割\n・auスマートバリュー\n・auでんき\n・固定回線セット", "fieldNote": "・旧資料にはSMSを口頭案内してもらう運用例がありますが、必ず対応されるとは限りません。", "important": "予約番号の有効期限は発行日を含む15日です。", "note": "割引加入者が一律Web不可とはしません。契約状態により追加確認があります。", "url": "https://www.au.com/support/service/mobile/procedure/contract/cancel/", "status": "公開", "checked": "2026-07-11"}, {"carrier": "UQ mobile", "category": "サブブランド", "logoUrl": "images/uq.svg", "webAvailable": "可能。My UQ mobileから手続き。MNPワンストップ対応先では予約番号不要。", "webSteps": "## Web手順\n・My UQ mobileへログイン\n・契約回線の詳細を開く\n・MNP予約番号発行を選択", "phoneAvailable": "可能。電話またはUQ取扱店。", "phone": "0120-001-659／9:00～20:00", "phoneSteps": "## 電話時の準備\n・契約者本人が連絡\n・暗証番号を準備\n・対象回線でSMSを受信できる状態にする", "timing": "Webは24時間。電話は9:00～20:00。", "precheck": "・家族セット割\n・自宅セット割\n・auでんき\n・契約名義", "unavailable": "・データ専用回線は対象外の場合あり", "trouble": "## SMS未着時\n・SMS拒否設定を確認\n・対象回線の受信状況を確認\n・公式窓口へ問い合わせる", "related": "・家族セット割\n・自宅セット割\n・auでんき", "fieldNote": "・旧資料の固定ガイダンス番号は変更される可能性があるため掲載しません。", "important": "予約番号の有効期限は発行日を含む15日です。", "note": "割引加入中でも一律Web不可とは限りません。", "url": "https://www.uqwimax.jp/mobile/flow/mnp_cancel/", "status": "公開", "checked": "2026-07-11"}, {"carrier": "SoftBank", "category": "大手キャリア", "logoUrl": "images/softbank.svg", "webAvailable": "可能。My SoftBankから手続き。MNPワンストップ対応先では予約番号不要。", "webSteps": "## Web手順\n・My SoftBankへログイン\n・契約・オプション管理\n・番号ポータビリティ関連手続き\n・内容を確認して発行", "phoneAvailable": "可能。電話またはソフトバンクショップ。", "phone": "SoftBank携帯：*5533／一般電話：0800-100-5533／9:00～20:00", "phoneSteps": "## 電話時の準備\n・契約者本人が連絡\n・暗証番号を準備\n・複数回線の場合は対象番号を伝える", "timing": "Web受付は24時間。予約番号の発行時間は9:00～20:00。", "precheck": "・未払い\n・名義変更未完了\n・法人契約\n・契約者本人以外の操作\n・一部割引やオプション", "unavailable": "・タブレットやモバイルデータ端末等はWeb手続き不可の場合あり", "trouble": "## Webで進めない場合\n・Wi-Fiを切ってモバイル通信で再試行\n・My SoftBankアプリまたはブラウザを変更\n・公式窓口へ確認", "related": "・家族割引\n・光回線セット\n・各種オプション", "fieldNote": "・旧資料の電話ガイダンス番号は変更リスクが高いため、音声案内に従ってください。", "important": "Web受付時間と予約番号発行時間は同じではありません。", "note": "法人・未払い・名義変更中などはWebで完了できない場合があります。", "url": "https://www.softbank.jp/mobile/support/cancellation/", "status": "公開", "checked": "2026-07-11"}, {"carrier": "Y!mobile", "category": "サブブランド", "logoUrl": "images/ymobile.svg", "webAvailable": "可能。My Y!mobileから手続き。", "webSteps": "## Web手順\n・My Y!mobileへログイン\n・契約確認・変更\n・MNP関連手続き\n・SMSで予約番号を確認", "phoneAvailable": "可能。電話またはワイモバイルショップ。", "phone": "0800-222-8449／9:00～20:00", "phoneSteps": "## 電話時の準備\n・契約者本人が連絡\n・暗証番号を準備\n・対象回線を確認", "timing": "Webは24時間。20時以降の受付は翌朝以降に順次通知。", "precheck": "・家族割引\n・主回線／副回線\n・未払い\n・契約名義", "unavailable": "・データ通信専用契約は対象外の場合あり", "trouble": "## SMS未着時\n・受信拒否設定を確認\n・My Y!mobileで発行状況を確認\n・公式窓口へ問い合わせる", "related": "・家族割引\n・SoftBank／LINEMO番号移行", "fieldNote": "・SoftBankまたはLINEMOへの移行は、通常のMNPではなく番号移行扱いです。", "important": "SoftBank・LINEMOへの移行では、通常MNP予約番号は不要です。", "note": "旧資料の固定ガイダンス番号は掲載しません。", "url": "https://www.ymobile.jp/support/faq/view/21461", "status": "公開", "checked": "2026-07-11"}, {"carrier": "楽天モバイル", "category": "オンライン専用", "logoUrl": "images/rakuten.svg", "webAvailable": "可能。my 楽天モバイルのアプリまたはWebから手続き。", "webSteps": "## Web手順\n・my 楽天モバイルへログイン\n・契約プラン\n・その他のお手続き\n・他社へのお乗り換え（MNP）", "phoneAvailable": "原則オンライン。認証不可時は公式チャットまたは窓口へ相談。", "phone": "my 楽天モバイル内のチャット・公式サポート", "phoneSteps": "## 問い合わせ時\n・ワンタイムパスワードの受信状況\n・契約名義と利用者情報\n・対象回線を確認", "timing": "即日発行。", "precheck": "・本人認証\n・登録メールアドレス\n・ワンタイムパスワード受信環境\n・旧プランか最強プランか", "unavailable": "・データ専用契約等は対象外の場合あり", "trouble": "## OTPが届かない場合\n・登録連絡先を確認\n・別端末やPCからログイン\n・公式チャットへ相談", "related": "・楽天モバイル旧プラン\n・メンバーズステーション", "fieldNote": "・旧プランではメンバーズステーションを使用する場合があります。旧プラン情報は別枠で管理してください。", "important": "端末が手元になくても、別端末やPCで本人認証できれば手続き可能です。", "note": "旧プランと楽天最強プランの手順を混在させません。", "url": "https://network.mobile.rakuten.co.jp/faq/detail/00001407/", "status": "公開", "checked": "2026-07-11"}, {"carrier": "povo 2.0", "category": "オンライン専用", "logoUrl": "images/povo.svg", "webAvailable": "可能。povo公式Webまたはアプリ内の案内から申請。", "webSteps": "## Web手順\n・povoの契約管理画面へログイン\n・解約・MNP関連手続き\n・MNP予約番号を申請", "phoneAvailable": "原則オンライン。エラー時はpovo公式チャット。", "phone": "povo公式チャット", "phoneSteps": "## 問い合わせ時\n・本人認証状況\n・SMS受信状況\n・エラー内容を伝える", "timing": "申込みは24時間。通知時間は公式画面を確認。", "precheck": "・SMS認証\n・契約開始当日かどうか\n・データ専用プランかどうか", "unavailable": "・データ専用プランはMNP不可\n・契約開始当日は発行不可の場合あり", "trouble": "## SMS認証不可時\n・SMSを受信できる端末へSIMを差し替える\n・eSIM再発行等を公式案内で確認\n・チャットへ相談", "related": "・povo 1.0からの移行履歴\n・過去のMNP申請", "fieldNote": "・povo 1.0の古い手順や電話番号は、povo 2.0と混在させないでください。", "important": "期限内に転出しなければ予約番号は失効し、povo契約は継続します。", "note": "期限切れ後も予約番号が残る、という旧資料の記載は使用しません。", "url": "https://povo.jp/support/cancellation/", "status": "公開", "checked": "2026-07-11"}, {"carrier": "mineo", "category": "MVNO", "logoUrl": "images/mineo.svg", "webAvailable": "可能。mineoマイページから発行。", "webSteps": "## Web手順\n・mineoマイページへログイン\n・各種サポート\n・解約・MNP予約番号発行\n・対象回線を選択", "phoneAvailable": "原則Web。必要に応じてmineoサポートへ問い合わせ。", "phone": "mineoサポートダイヤルは公式ページで確認", "phoneSteps": "## 問い合わせ時\n・eoID\n・対象回線\n・契約タイプを準備", "timing": "24時間受付。時間帯により翌朝以降の処理。", "precheck": "・デュアルタイプかシングルタイプか\n・パケットシェア\n・代表回線", "unavailable": "・シングルタイプはMNP対象外", "trouble": "## パケットシェア\n・MNP予約番号発行時に自動脱退\n・通常解約の場合は事前脱退が必要", "related": "・パケットシェア\n・eoID\n・複数回線", "fieldNote": "・旧資料にある全メンバー承認・強制廃止は、現在のMNP転出では原則不要です。", "important": "MNP転出では、予約番号発行と同時にパケットシェアから自動脱退します。", "note": "通常解約とMNP転出を混同しないでください。", "url": "https://support.mineo.jp/notes_cancel.html", "status": "公開", "checked": "2026-07-11"}, {"carrier": "IIJmio", "category": "MVNO", "logoUrl": "images/iijmio.svg", "webAvailable": "可能。会員専用ページから発行。", "webSteps": "## Web手順\n・会員専用ページへログイン\n・MNP転出手続き\n・対象の音声SIM／音声eSIMを選択", "phoneAvailable": "電話での予約番号発行は原則不可。", "phone": "なし（Web手続き）", "phoneSteps": "## 事前準備\n・mioID\n・対象回線\n・登録メールアドレスを確認", "timing": "最短1日から最大4日程度。", "precheck": "・音声SIM／音声eSIMか\n・最低利用期間\n・未払い", "unavailable": "・データSIMはMNP対象外", "trouble": "## 発行が遅い場合\n・会員ページで申請状況を確認\n・登録メールを確認\n・最大日数を超えた場合は公式サポートへ相談", "related": "・ギガプラン\n・旧プラン", "fieldNote": "・旧プランと現行ギガプランでは条件が異なるため、必ず契約プランを確認してください。", "important": "音声SIM・音声eSIMのみ対象です。", "note": "au回線即時／docomo回線翌日という旧記載は現行資料には使いません。", "url": "https://help.iijmio.jp/answer/6045d1dc33f57500138d5804/", "status": "公開", "checked": "2026-07-11"}, {"carrier": "BIGLOBEモバイル", "category": "MVNO", "logoUrl": "images/biglobe.svg", "webAvailable": "可能。BIGLOBEモバイルのWeb手続き。", "webSteps": "## Web手順\n・BIGLOBE会員ページへログイン\n・モバイル契約の解約・MNP\n・MNP予約番号発行を申請", "phoneAvailable": "原則Web。", "phone": "必要時はBIGLOBE公式窓口", "phoneSteps": "## 事前準備\n・BIGLOBE ID\n・登録メールアドレス\n・対象SIMを確認", "timing": "手続き完了後、翌日までに登録メールまたはBIGLOBEメールへ通知。", "precheck": "・ベーシックコース\n・BIGLOBEメール\n・シェアSIM\n・主SIMと子SIMの関係", "unavailable": "・データSIMはMNP対象外", "trouble": "## 転出後\n・BIGLOBE会員契約が残っていないか確認\n・メールやベーシックコースの継続課金を確認", "related": "・ベーシックコース\n・BIGLOBEメール\n・シェアSIM\n・BIGLOBE光", "fieldNote": "・シェアSIMの転出順序は契約状態により異なるため、親回線を先に操作する前に公式確認してください。", "important": "MNP転出後もBIGLOBE会員契約やメール等が残る場合があります。", "note": "旧資料の時間帯別発行目安や実測例は使用しません。", "url": "https://support.biglobe.ne.jp/mobile/kaiyaku/mnp.html", "status": "公開", "checked": "2026-07-11"}, {"carrier": "AEON MOBILE", "category": "MVNO", "logoUrl": "images/aeon.svg", "webAvailable": "可能。AEONモバイルマイページから申請。", "webSteps": "## Web手順\n・マイページへログイン\n・対象電話番号を選択\n・MNP予約番号発行申込", "phoneAvailable": "可能。電話または店舗。", "phone": "公式窓口番号は公式サイトで都度確認", "phoneSteps": "## 申請時\n・契約者情報\n・対象回線\n・本人確認情報を準備", "timing": "8:00までの申込みは当日23:00、8:00以降は翌日23:00。", "precheck": "・申請時間\n・対象回線\n・音声SIMかどうか", "unavailable": "・データSIMはMNP対象外", "trouble": "## 発行確認\n・マイページ\n・SMSまたはメール通知\n・発行時刻を過ぎても未発行なら公式窓口へ確認", "related": "・マイページ\n・店舗契約", "fieldNote": "・電話ガイダンスや通知時刻は変更される場合があるため、公式案内を優先してください。", "important": "通常の解約ではなく、MNP予約番号発行を選択します。", "note": "発行申込み後のキャンセル可否は最新の申込画面で確認してください。", "url": "https://faq.aeonmobile.jp/faq/show/1273", "status": "公開", "checked": "2026-07-11"}, {"carrier": "OCN モバイル ONE", "category": "MVNO", "logoUrl": "images/ocn.svg", "webAvailable": "可能。OCNマイページから申請。", "webSteps": "## Web手順\n・OCNマイページへログイン\n・契約中サービス\n・解約・MNP転出\n・予約番号発行を申請", "phoneAvailable": "原則Web。ログイン不可時は公式チャット等へ相談。", "phone": "公式サポート", "phoneSteps": "## ログイン不可時\n・OCN ID\n・Nから始まるお客さま番号\n・登録メールアドレスを確認", "timing": "発行には3営業日程度。", "precheck": "・音声対応SIMか\n・利用開始月か\n・OCN IDを確認", "unavailable": "・データSIMはMNP対象外\n・利用開始月は手続きできない場合あり", "trouble": "## 発行状況\n・マイページで確認\n・登録メールを確認\n・3営業日を超えたら公式サポートへ相談", "related": "・OCN ID\n・旧ログイン方式\n・メールアドレス", "fieldNote": "・旧資料の『1～2時間でSMS発行』は現在の公式案内と一致しません。", "important": "MNP予約番号の発行には3営業日程度かかります。", "note": "30分～2時間という旧情報は使用しません。", "url": "https://support.ocn.ne.jp/mobile-one/faq/detail/pid2300000ej0/", "status": "公開", "checked": "2026-07-11"}, {"carrier": "日本通信SIM", "category": "MVNO", "logoUrl": "images/nihontsushin.svg", "webAvailable": "可能。日本通信マイページから申請。", "webSteps": "## Web手順\n・マイページへログイン\n・MNP予約番号取得\n・予約番号発行を申し込む", "phoneAvailable": "電話発行は原則不可。", "phone": "なし（Web手続き）", "phoneSteps": "## 事前準備\n・マイページID\n・登録メールアドレス\n・対象回線を確認", "timing": "申込みから2日かかる場合があります。", "precheck": "・マイページへログインできるか\n・登録メールを受信できるか", "unavailable": "・データ専用SIMはMNP対象外", "trouble": "## 発行確認\n・登録メールを確認\n・マイページで状況を確認\n・2日を超える場合は公式サポートへ確認", "related": "・MNPワンストップ\n・日本通信マイページ", "fieldNote": "・乗り換え先によってはMNPワンストップを利用できます。", "important": "予約番号の有効期限は発行日を含む15日です。", "note": "『必ず2日後17時』のような固定時刻では案内しません。", "url": "https://www.nihontsushin.com/support/support_mnp_portout.html", "status": "公開", "checked": "2026-07-11"}, {"carrier": "Pikaraモバイル", "category": "MVNO", "logoUrl": "images/pikara.svg", "webAvailable": "可能。PikaraモバイルMyページから申請。", "webSteps": "## Web手順\n・Myページへログイン\n・MNP予約番号発行\n・対象回線を選択", "phoneAvailable": "可能。サービスセンターへ問い合わせ。", "phone": "0800-777-2110／9:00～19:00", "phoneSteps": "## 電話時の準備\n・契約者情報\n・対象回線\n・本人確認情報を準備", "timing": "通常2～3日。審査状況により数日。", "precheck": "・未払い\n・データ通信タイプ\n・パケットシェアの状態", "unavailable": "・データ通信タイプはMNP対象外\n・未払いがある場合は発行不可", "trouble": "## 発行が進まない場合\n・Myページの状態確認\n・登録メール確認\n・サービスセンターへ問い合わせ", "related": "・パケットシェア\n・リーダー回線／メンバー回線", "fieldNote": "・パケットシェアはリーダーとメンバーで処理が異なるため、先に公式案内を確認してください。", "important": "未払いがある場合はMNP予約番号を発行できません。", "note": "発行時間は審査状況により変動します。", "url": "https://www.pikara.jp/mobile/support/mnp-tenshutsu.html", "status": "公開", "checked": "2026-07-11"}];
+
+const state={all:[],query:"",category:"すべて"};
+const $=s=>document.querySelector(s);
+const esc=(s="")=>String(s).replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
+const norm=v=>String(v??"").toLowerCase().normalize("NFKC");
+
+function dateLabel(v){
+  if(!v)return "未確認";
+  const d=new Date(v);
+  return Number.isNaN(d.getTime())?v:d.toLocaleDateString("ja-JP");
+}
+function highlight(text,q){
+  const safe=esc(text||"");
+  if(!q)return safe;
+  const words=q.trim().split(/\s+/).filter(Boolean).map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));
+  return words.length?safe.replace(new RegExp(`(${words.join("|")})`,"gi"),"<mark>$1</mark>"):safe;
+}
+function rich(text,q){
+  if(!text)return "";
+  let html="",listOpen=false;
+  const close=()=>{if(listOpen){html+="</ul>";listOpen=false;}};
+  String(text).split(/\r?\n/).forEach(raw=>{
+    const line=raw.trim();
+    if(!line)return;
+    if(line.startsWith("##")){
+      close(); html+=`<h4>${highlight(line.replace(/^##\s*/,""),q)}</h4>`;
+    }else if(line.startsWith("・")){
+      if(!listOpen){html+="<ul>";listOpen=true;}
+      html+=`<li>${highlight(line.slice(1).trim(),q)}</li>`;
+    }else if(line.startsWith("※")){
+      close(); html+=`<div class="notice"><b>注意</b>${highlight(line.slice(1).trim(),q)}</div>`;
+    }else if(line.startsWith("【重要】")){
+      close(); html+=`<div class="important"><b>重要</b>${highlight(line.replace(/^【重要】\s*/,""),q)}</div>`;
+    }else{
+      close(); html+=`<p>${highlight(line,q)}</p>`;
+    }
+  });
+  close(); return html;
+}
+function section(title,text,q){
+  if(!text)return "";
+  return `<section class="section"><h3 class="section-title">${esc(title)}</h3><div class="rich">${rich(text,q)}</div></section>`;
+}
+function logoHtml(item){
+  const fallback=esc((item.carrier||"?").slice(0,2));
+  if(!item.logoUrl)return `<span class="logo-fallback">${fallback}</span>`;
+  return `<img class="logo" src="${esc(item.logoUrl)}" alt="${esc(item.carrier)} ロゴ" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'logo-fallback',textContent:'${fallback}'}))">`;
+}
+function card(item,index){
+  const q=state.query;
+  return `<article class="card" id="card-${index}">
+    <div class="card-head">
+      <div class="logo-wrap">${logoHtml(item)}</div>
+      <div class="title-area">
+        <h2 class="carrier">${highlight(item.carrier,q)}</h2>
+        <span class="category">${esc(item.category||"その他")}</span>
+      </div>
+      <div class="card-actions"><button class="expand" data-target="card-${index}">詳細</button></div>
+    </div>
+    <div class="card-body">
+      <div class="summary-grid">
+        <div class="summary-box is-primary is-method"><div class="summary-label">発行方法</div><div class="summary-text">${highlight(item.webAvailable||item.phoneAvailable,q)}</div></div>
+        <div class="summary-box"><div class="summary-label">発行目安</div><div class="summary-text">${highlight(item.timing,q)}</div></div>
+        ${item.phone?`<div class="summary-box is-primary is-contact"><div class="summary-label">窓口</div><div class="summary-text">${highlight(item.phone,q)}</div></div>`:""}
+        <div class="summary-box"><div class="summary-label">重要</div><div class="summary-text">${highlight(item.important,q)}</div></div>
+      </div>
+      <div class="detail">
+        ${section("Web発行",item.webAvailable,q)}
+        ${section("Web手順",item.webSteps,q)}
+        ${section("電話発行",item.phoneAvailable,q)}
+        ${section("電話手順",item.phoneSteps,q)}
+        ${section("事前確認",item.precheck,q)}
+        ${section("発行不可・対象外",item.unavailable,q)}
+        ${section("トラブル対応",item.trouble,q)}
+        ${section("関連サービス・回線",item.related,q)}
+        ${item.fieldNote?`<div class="notice"><b>現場補足・要確認</b>${highlight(item.fieldNote,q)}</div>`:""}
+        ${item.important?`<div class="important"><b>重要</b>${highlight(item.important,q)}</div>`:""}
+        ${item.note?`<div class="notice"><b>注意</b>${highlight(item.note,q)}</div>`:""}
+        <div class="meta">
+          <span>最終確認：${esc(dateLabel(item.checked))}</span>
+          ${item.url?`<a class="official" href="${esc(item.url)}" target="_blank" rel="noopener">公式情報を見る ↗</a>`:""}
+        </div>
+      </div>
+    </div>
+  </article>`;
+}
+function renderFilters(){
+  const cats=["すべて",...new Set(state.all.map(x=>x.category).filter(Boolean))];
+  $("#filters").innerHTML=cats.map(c=>`<button class="chip ${state.category===c?"active":""}" data-cat="${esc(c)}">${esc(c)}</button>`).join("");
+  document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{state.category=b.dataset.cat;renderFilters();render();});
+}
+function render(){
+  const words=norm(state.query).split(/\s+/).filter(Boolean);
+  const filtered=state.all.filter(item=>{
+    if(item.status&&item.status!=="公開")return false;
+    if(state.category!=="すべて"&&item.category!==state.category)return false;
+    const hay=norm(Object.values(item).join(" "));
+    return words.every(w=>hay.includes(w));
+  });
+  $("#grid").innerHTML=filtered.map(card).join("");
+  $("#grid").style.display=filtered.length?"grid":"none";
+  $("#empty").style.display=filtered.length?"none":"block";
+  const total=state.all.filter(x=>!x.status||x.status==="公開").length;
+  $("#count").textContent=`${filtered.length}件表示 / 全${total}件`;
+  const heroCount=document.getElementById("heroCount");
+  if(heroCount)heroCount.textContent=total;
+  $("#clear").style.display=state.query?"block":"none";
+  document.querySelectorAll(".expand").forEach(btn=>btn.onclick=()=>{
+    const el=document.getElementById(btn.dataset.target);
+    el.classList.toggle("open");
+    btn.textContent=el.classList.contains("open")?"閉じる":"詳細";
+  });
+}
+async function load(){
+  try{
+    let payload;
+    if(APPS_SCRIPT_URL){
+      const sep=APPS_SCRIPT_URL.includes("?")?"&":"?";
+      const res=await fetch(`${APPS_SCRIPT_URL}${sep}t=${Date.now()}`,{cache:"no-store"});
+      if(!res.ok)throw new Error(`HTTP ${res.status}`);
+      payload=await res.json();
+      if(payload.error)throw new Error(payload.error);
+    }else{
+      payload={data:DEMO_DATA,updated:"デモデータ表示中"};
+    }
+    state.all=Array.isArray(payload)?payload:(payload.data||[]);
+    renderFilters();render();
+    $("#sync").textContent=APPS_SCRIPT_URL?`スプレッドシート同期：${payload.updated||new Date().toLocaleString("ja-JP")}`:"デモデータ表示中｜Apps Script URLを設定すると自動同期します";
+  }catch(e){
+    state.all=DEMO_DATA;renderFilters();render();
+    $("#error").style.display="block";
+    $("#error").textContent=`データ読み込みに失敗したためデモデータを表示しています。${e.message}`;
+    $("#sync").textContent="デモデータ表示中";
+  }
+}
+$("#search").addEventListener("input",e=>{state.query=e.target.value;render();});
+$("#clear").addEventListener("click",()=>{$("#search").value="";state.query="";render();$("#search").focus();});
+load();
+</script>
+</body>
+</html>
